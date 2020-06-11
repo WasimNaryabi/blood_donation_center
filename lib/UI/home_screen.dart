@@ -503,6 +503,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 Text("Blood Group:"),
                                                 Expanded(
                                                   child:Container(
+
                                                     child: Row(children: <Widget>[
                                                       Container(
                                                         margin: EdgeInsets.all(5.0),
