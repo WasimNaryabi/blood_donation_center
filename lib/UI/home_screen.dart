@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import '../main.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 
 import 'blood_compatability.dart';
 import 'blood_requests.dart';
@@ -13,10 +16,13 @@ import 'profile_screen.dart';
 import 'search_blood.dart';
 import 'set_blood_donation_history.dart';
 
+
 class HomeScreen extends StatefulWidget {
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
+
 class BloodRequests{
   var name,contact,message,bloodgroup,date,units,address,city;
 
@@ -41,6 +47,7 @@ class BloodRequests{
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   var id;
   var name;
   var email;
@@ -57,10 +64,11 @@ class _HomeScreenState extends State<HomeScreen> {
   String _selectedValue = "A+";
 
   static final API_URL ="http://www.fonesolutions31.com/BloodDonationCenterApi/apies/get-limited-blood-request.php";
+
   var list_lenght;
+
   _getPreferences() async {
-    var sharedPrefs = await SharedPreferences.getInstance(); // Save a value
-    //preferences.setString('value_key', 'hello preferences');// Retrieve value later
+    var sharedPrefs = await SharedPreferences.getInstance();
     id = sharedPrefs.getString('id');
     name = sharedPrefs.getString('name');
     email = sharedPrefs.getString('email');
@@ -70,6 +78,16 @@ class _HomeScreenState extends State<HomeScreen> {
     city = sharedPrefs.getString('city');
     lastdonation = sharedPrefs.getString('lastdonation');
     islogined = sharedPrefs.getBool('islogin');
+  }
+
+  String text = '';
+  String subject = '';
+
+  share(BuildContext context) {
+    final RenderBox box = context.findRenderObject();
+    Share.share(text,
+        subject: subject,
+        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
 
   Future<List<BloodRequests>> _getBloodRequests() async {
@@ -92,8 +110,18 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _getPreferences().whenComplete(() {
-      setState(() {});
+      setState(() {
+      });
     });
+  }
+
+  _Call(String number) async {
+    var url = 'tel:+$number';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -528,6 +556,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ],),
                                                   ),
                                                 ),
+
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            child: Row(
+                                              children: <Widget>[
+
                                                 Expanded(
                                                   child:Container(
                                                     margin: EdgeInsets.all(5.0),
@@ -541,26 +577,76 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 50.0))),
                                                     child: Padding(
                                                         padding: EdgeInsets.all(1.0),
-                                                        child: Icon(
-                                                          Icons.call,
-                                                          color: Colors.white,
-                                                          size: 20,
+                                                        child: IconButton(
+                                                            color: Colors.white,
+                                                            icon: Icon(Icons.call),
+                                                            onPressed: (){_Call(snapshot.data[index].contact.toString());}
+                                                        )),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child:Container(
+                                                    margin: EdgeInsets.all(5.0),
+                                                    width: 40.0,
+                                                    height: 40.0,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.greenAccent,
+                                                        borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                50.0))),
+                                                    child: Padding(
+                                                        padding: EdgeInsets.all(1.0),
+                                                        child: Builder(
+                                                          builder: (BuildContext context){
+                                                            return IconButton(
+                                                              color: Colors.white,
+                                                              icon: Icon(Icons.share),
+                                                              onPressed:() {
+                                                                print(".........  >> Share pressed");
+                                                                var _name = snapshot.data[index].name;
+                                                                var _message = snapshot.data[index].message;
+                                                                var _contact = snapshot.data[index].contact;
+                                                                var _bloodgroup =snapshot.data[index].bloodgroup;
+                                                                var _units =snapshot.data[index].units;
+                                                                var _city =snapshot.data[index].city;
+                                                                var _addrees =snapshot.data[index].address;
+                                                                text ="Blood Request\nName:$_name\nMessage:$_message\n"
+                                                                    "Blood Group: $_bloodgroup\nNeed Units: $_units\n"
+                                                                    "Contact Number: $_contact\nCity: $_city\nAddress: $_addrees";
+                                                                subject="Blood Request";
+                                                                // print("-------->Text >>>> $text");
+                                                                //print("-------->Text >>>> $text");
+
+                                                                if(text.isEmpty){
+
+                                                                }else {
+                                                                  print("-------->Text >>>> $text");
+                                                                  share(context);
+                                                                }
+                                                              },
+                                                            );
+                                                          }
+
                                                         )),
                                                   ),
                                                 ),
                                               ],
                                             ),
                                           ),
-
+                                          SizedBox(
+                                            height: 20,
+                                          ),
                                         ],
                                       ),
                                     );
                                   });
                                 }
                                 },
-
-
                             ),
+                          ),
+                          SizedBox(
+                            height: 20,
                           ),
                         ],
                       ),
