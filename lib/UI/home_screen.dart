@@ -242,11 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: EdgeInsets.all(10.0),
                                   child: GestureDetector(
                                       onTap: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        AddDonationHistory()));
+
                                       },
                                       child: Text(
                                         "Set",
@@ -458,15 +454,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ),
                                           Container(
-                                            child: Padding(
-                                                padding: EdgeInsets.all(10.0),
-                                                child: Text(
-                                                  snapshot.data[index].message,
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 12.0),
-                                                  textAlign: TextAlign.left,
-                                                )),
+                                            child: Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child:Container(
+                                                    child: Row(children: <Widget>[
+                                                      Container(
+                                                        margin: EdgeInsets.all(5.0),
+                                                        width: 25.0,
+                                                        height: 25.0,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.red,
+                                                            borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    50.0))),
+                                                        child: Padding(
+                                                            padding: EdgeInsets.all(1.0),
+                                                            child: Icon(
+                                                              Icons.mail,
+                                                              color: Colors.white,
+                                                              size: 18,
+                                                            )),
+                                                      ),
+                                                      Text(snapshot.data[index].message),
+                                                    ],),
+                                                  ) ,
+                                                ),
+
+                                              ],
+                                            ),
                                           ),
                                           Container(
                                             child: Row(
@@ -528,15 +545,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Container(
                                             child: Row(
                                               children: <Widget>[
-                                                Text("Blood Group:"),
                                                 Expanded(
                                                   child:Container(
 
                                                     child: Row(children: <Widget>[
                                                       Container(
                                                         margin: EdgeInsets.all(5.0),
-                                                        width: 40.0,
-                                                        height: 40.0,
+                                                        width: 25.0,
+                                                        height: 25.0,
                                                         decoration: BoxDecoration(
                                                             color: Colors.red,
                                                             borderRadius:
@@ -544,18 +560,46 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 Radius.circular(
                                                                     50.0))),
                                                         child: Padding(
-                                                            padding: EdgeInsets.all(1.0),
+                                                            padding: EdgeInsets.all(2.0),
                                                             child: Text(
                                                               snapshot.data[index].bloodgroup,
-                                                              style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 22.0),
+                                                              style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18.0),
                                                               textAlign: TextAlign.center,
 
                                                             )),
                                                       ),
-
+                                                      Text("Blood Group",textAlign: TextAlign.left),
                                                     ],),
                                                   ),
                                                 ),
+
+                                                Expanded(
+                                                  child:Container(
+                                                    child: Row(children: <Widget>[
+                                                      Container(
+                                                        margin: EdgeInsets.all(5.0),
+                                                        width: 25.0,
+                                                        height: 25.0,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.red,
+                                                            borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    50.0))),
+                                                        child: Padding(
+                                                            padding: EdgeInsets.all(2.0),
+                                                            child: Text(
+                                                              snapshot.data[index].units,
+                                                              style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18.0),
+                                                              textAlign: TextAlign.center,
+
+                                                            )),
+                                                      ),
+                                                      Text("Units",textAlign: TextAlign.left),
+                                                    ],),
+                                                  ),
+                                                ),
+
 
                                               ],
                                             ),
@@ -563,14 +607,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Container(
                                             child: Row(
                                               children: <Widget>[
-
                                                 Expanded(
                                                   child:Container(
                                                     margin: EdgeInsets.all(5.0),
                                                     width: 40.0,
                                                     height: 40.0,
                                                     decoration: BoxDecoration(
-                                                        color: Colors.greenAccent,
+                                                        color: Colors.blue,
                                                         borderRadius:
                                                         BorderRadius.all(
                                                             Radius.circular(
@@ -590,7 +633,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     width: 40.0,
                                                     height: 40.0,
                                                     decoration: BoxDecoration(
-                                                        color: Colors.greenAccent,
+                                                        color: Colors.blue,
                                                         borderRadius:
                                                         BorderRadius.all(
                                                             Radius.circular(
@@ -598,35 +641,33 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     child: Padding(
                                                         padding: EdgeInsets.all(1.0),
                                                         child: Builder(
-                                                          builder: (BuildContext context){
-                                                            return IconButton(
-                                                              color: Colors.white,
-                                                              icon: Icon(Icons.share),
-                                                              onPressed:() {
-                                                                print(".........  >> Share pressed");
-                                                                var _name = snapshot.data[index].name;
-                                                                var _message = snapshot.data[index].message;
-                                                                var _contact = snapshot.data[index].contact;
-                                                                var _bloodgroup =snapshot.data[index].bloodgroup;
-                                                                var _units =snapshot.data[index].units;
-                                                                var _city =snapshot.data[index].city;
-                                                                var _addrees =snapshot.data[index].address;
-                                                                text ="Blood Request\nName:$_name\nMessage:$_message\n"
-                                                                    "Blood Group: $_bloodgroup\nNeed Units: $_units\n"
-                                                                    "Contact Number: $_contact\nCity: $_city\nAddress: $_addrees";
-                                                                subject="Blood Request";
-                                                                // print("-------->Text >>>> $text");
-                                                                //print("-------->Text >>>> $text");
+                                                            builder: (BuildContext context){
+                                                              return IconButton(
+                                                                color: Colors.white,
+                                                                icon: Icon(Icons.share),
+                                                                onPressed:() {
+                                                                  var _name = snapshot.data[index].name;
+                                                                  var _message = snapshot.data[index].message;
+                                                                  var _contact = snapshot.data[index].contact;
+                                                                  var _bloodgroup =snapshot.data[index].bloodgroup;
+                                                                  var _units =snapshot.data[index].units;
+                                                                  var _city =snapshot.data[index].city;
+                                                                  var _addrees =snapshot.data[index].address;
+                                                                  text ="Blood Request\nName:$_name\nMessage:$_message\n"
+                                                                      "Blood Group: $_bloodgroup\nNeed Units: $_units\n"
+                                                                      "Contact Number: $_contact\nCity: $_city\nAddress: $_addrees";
+                                                                  subject="Blood Request";
 
-                                                                if(text.isEmpty){
 
-                                                                }else {
-                                                                  print("-------->Text >>>> $text");
-                                                                  share(context);
-                                                                }
-                                                              },
-                                                            );
-                                                          }
+                                                                  if(text.isEmpty){
+
+                                                                  }else {
+
+                                                                    share(context);
+                                                                  }
+                                                                },
+                                                              );
+                                                            }
 
                                                         )),
                                                   ),
@@ -635,7 +676,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ),
                                           SizedBox(
-                                            height: 20,
+                                            height: 10,
                                           ),
                                         ],
                                       ),
@@ -644,9 +685,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 }
                                 },
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
                           ),
                         ],
                       ),
