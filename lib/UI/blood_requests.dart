@@ -106,7 +106,6 @@ class _BloodRequestState extends State<BloodRequest> {
                   ),
                   child: Column(
                     children: <Widget>[
-
                       Expanded(
                         child: FutureBuilder<List<BloodRequests>>(
                           future: _getBloodRequests(),

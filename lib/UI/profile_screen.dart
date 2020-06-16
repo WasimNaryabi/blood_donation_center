@@ -1,8 +1,27 @@
+import 'dart:convert';
+
 import 'package:blooddonationcenter/UI/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 import 'signup_screen.dart';
+
+class BloodDonationHistory{
+  var date,hospital,city;
+
+  BloodDonationHistory({this.date, this.hospital, this.city});
+
+  factory BloodDonationHistory.fromJson(Map<String, dynamic> json){
+    return BloodDonationHistory(
+      date: json['date'].toString(),
+      hospital: json['hospital'].toString(),
+      city: json['city'].toString(),
+    );
+  }
+
+
+}
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -21,6 +40,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   var lastdonation;
   var islogined;
 
+  static final API_URL ="http://www.fonesolutions31.com/BloodDonationCenterApi/apies/get-my-blood-history.php";
+
+  List<BloodDonationHistory> bloodhistory =[];
+  var list_lenght;
+
   _getPreferences() async {
     var sharedPrefs = await SharedPreferences.getInstance();
     id = sharedPrefs.getString('id');
@@ -32,6 +56,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
     city = sharedPrefs.getString('city');
     lastdonation = sharedPrefs.getString('lastdonation');
     islogined = sharedPrefs.getBool('islogin');
+  }
+
+  Future<List<BloodDonationHistory>> _getBloodDonationHistory() async{
+   var data = await http.post(API_URL,body: {
+      'id':id
+    });
+  // print(data.body);
+      if (data.statusCode == 200) {
+        var jsonData = json.decode(data.body);
+
+        bloodhistory=(jsonData['history'] as List)
+            .map((p) => BloodDonationHistory.fromJson(p))
+            .toList();
+        setState(() {
+          list_lenght= bloodhistory.length;
+        });
+
+        return bloodhistory;
+      }
+
+    return null;
   }
 
   @override
@@ -265,12 +310,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               Container(
-
+                height: MediaQuery.of(context).size.height/2.8,
                 margin: EdgeInsets.all(5.0),
                 child: Column(
                   children: <Widget>[
                     Container(
-
                       child: Row(
                         children: <Widget>[
                           Padding(
@@ -280,71 +324,122 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      height: MediaQuery.of(context).size.height/5,
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black38,
-                                    spreadRadius: 1.0,
-                                    blurRadius: 1.0,
-
-                                  )
-                                ]
-                            ),
-                            child: Row(
-                              children: <Widget>[
-                                Padding(
-                                    padding: EdgeInsets.all(10.0),
-                                    child:Text("Demo Name",style: TextStyle(color: Colors.white,fontSize: 15.0),)
-                                ),
-
-                              ],
-                            ),
-                          ),
-                          Container(
-                            color: Colors.white,
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.all(5.0),
-                                  width: 25.0,
-                                  height: 25.0,
+                    Expanded(
+                      child: FutureBuilder<List<BloodDonationHistory>>(
+                        future: _getBloodDonationHistory(),
+                        builder: (BuildContext context, AsyncSnapshot snapshot){
+                          if(snapshot.data == null){
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(1.0)),
+                              ),
+                              child: Center(
+                                child: Text("Loading....",style: TextStyle(color:Colors.red),),
+                              ),
+                            );
+                          }else {
+                            return ListView.builder(
+                              itemCount: list_lenght,
+                              itemBuilder: (BuildContext context, int index){
+                                return  Container(
+                                  margin: EdgeInsets.only(bottom: 5.0,top: 0.0),
+                                  padding: EdgeInsets.all(1.0),
                                   decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.all(Radius.circular(50.0))
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black38,
+                                          spreadRadius: 1.0,
+                                          blurRadius: 1.0,
+                                        )
+                                      ]
                                   ),
-                                  child: Padding(
-                                      padding: EdgeInsets.all(1.0),
-                                      child:Icon(Icons.local_hospital,color: Colors.white,size: 18,)
-                                  ),
-                                ),
-                                Text("Hospital Address"),
-                                Container(
-                                  margin: EdgeInsets.all(5.0),
-                                  width: 25.0,
-                                  height: 25.0,
-                                  decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.all(Radius.circular(50.0))
-                                  ),
-                                  child: Padding(
-                                      padding: EdgeInsets.all(1.0),
-                                      child:Icon(Icons.location_city,color: Colors.white,size: 18,)
-                                  ),
-                                ),
-                                Text("City name"),
+                                  child: Column(
+                                    children: <Widget>[
+
+                                      Container(
+                                        color: Colors.white,
+                                        child: Column(
+                                          children: <Widget>[
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black38,
+                                                      spreadRadius: 1.0,
+                                                      blurRadius: 1.0,
+
+                                                    )
+                                                  ]
+                                              ),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Padding(
+                                                      padding: EdgeInsets.all(10.0),
+                                                      child:Text("Date: "+snapshot.data[index].date,style: TextStyle(color: Colors.white,fontSize: 15.0),)
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Container(
+                                                    margin: EdgeInsets.all(5.0),
+                                                    width: 25.0,
+                                                    height: 25.0,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.red,
+                                                        borderRadius: BorderRadius.all(Radius.circular(50.0))
+                                                    ),
+                                                    child: Padding(
+                                                        padding: EdgeInsets.all(1.0),
+                                                        child:Icon(Icons.local_hospital,color: Colors.white,size: 18,)
+                                                    ),
+                                                  ),
+                                                  Text(snapshot.data[index].hospital),
+
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Container(
+                                                    margin: EdgeInsets.all(5.0),
+                                                    width: 25.0,
+                                                    height: 25.0,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.red,
+                                                        borderRadius: BorderRadius.all(Radius.circular(50.0))
+                                                    ),
+                                                    child: Padding(
+                                                        padding: EdgeInsets.all(1.0),
+                                                        child:Icon(Icons.location_city,color: Colors.white,size: 18,)
+                                                    ),
+                                                  ),
+                                                  Text(snapshot.data[index].city),
 
 
-                              ],
-                            ),
-                          ),
-                        ],
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              });
+                          }
+                        },
                       ),
                     )
                   ],
