@@ -14,7 +14,7 @@ import 'login_screen.dart';
 import 'my_requests.dart';
 import 'profile_screen.dart';
 import 'search_blood.dart';
-import 'set_blood_donation_history.dart';
+import 'add_donation_history.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -24,13 +24,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class BloodRequests{
-  var name,contact,message,bloodgroup,date,units,address,city;
+  var id,name,contact,message,bloodgroup,date,units,address,city;
 
-  BloodRequests({this.name, this.contact, this.message, this.bloodgroup,
+  BloodRequests({this.id,this.name, this.contact, this.message, this.bloodgroup,
       this.date, this.units, this.address, this.city});
 
   factory BloodRequests.fromJson(Map<String, dynamic> json){
     return BloodRequests(
+      id:json['id'].toString(),
       name: json['name'].toString(),
       contact: json['contact'].toString(),
       message: json['message'].toString(),
@@ -66,6 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
   static final API_URL ="http://www.fonesolutions31.com/BloodDonationCenterApi/apies/get-limited-blood-request.php";
 
   var list_lenght;
+
+  var currentId;
 
   _getPreferences() async {
     var sharedPrefs = await SharedPreferences.getInstance();
@@ -149,6 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   title: Text("Profile"),
                   onTap: () {
+                    Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => ProfileScreen()));
                   },
@@ -160,6 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   title: Text("Blood Requests"),
                   onTap: () {
+                    Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => BloodRequest()));
                   },
@@ -171,6 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   title: Text("My Request"),
                   onTap: () {
+                    Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => MyBloodRequest()));
                   },
@@ -182,6 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   title: Text("Blood compatability"),
                   onTap: () {
+                    Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) =>
                             BloodCompatability()));
@@ -242,10 +249,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: EdgeInsets.all(10.0),
                                   child: GestureDetector(
                                       onTap: () {
-
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                            builder: (BuildContext context) => ProfileScreen()));
                                       },
                                       child: Text(
-                                        "Set",
+                                        "My Profile",
                                         style: TextStyle(
                                             fontSize: 15.0, color: Colors.blue),
                                         textAlign: TextAlign.right,
@@ -298,6 +306,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(5.0))),
                               child: DropdownButton(
+                                underline: SizedBox(),
                                 isExpanded: true,
                                 icon: Icon(
                                   Icons.arrow_drop_down,
@@ -328,7 +337,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                SearchBlood()));
+                                                SearchBlood(_selectedValue)));
                                     debugPrint(
                                         "You selected $userSelectdValue");
                                   });
@@ -405,6 +414,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   return ListView.builder(
                                   itemCount: list_lenght,
                                   itemBuilder: (BuildContext context, int index){
+                                    currentId =snapshot.data[index].id;
                                     return  Container(
                                       padding: EdgeInsets.all(5.0),
                                       decoration: BoxDecoration(
@@ -416,7 +426,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: <Widget>[
                                           Container(
                                             decoration: BoxDecoration(
-                                                color: Colors.red,
+                                                color: getColor(currentId),
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(1.0)),
                                                 boxShadow: [
@@ -708,18 +718,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   Navigator.of(context).pop(false);
                 },
-                child: Text("NO"),
+                child: Text("NO",style: TextStyle(
+                    color: Colors.white,
+                    backgroundColor: Colors.blue,
+                    fontSize: 20.0),),
               ),
               SizedBox(height: 16),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).pop(true);
                 },
-                child: Text("YES"),
+                child: Text("YES",style: TextStyle(
+                    color: Colors.white,
+                    backgroundColor: Colors.red,
+                    fontSize: 20.0),),
               ),
             ],
           ),
         ) ??
         false;
+  }
+
+  Color getColor(String selector) {
+    if (selector  == id) {
+      return Colors.amber;
+    } else {
+      return Colors.red;
+    }
   }
 }

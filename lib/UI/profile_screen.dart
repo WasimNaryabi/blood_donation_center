@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'add_donation_history.dart';
 import 'signup_screen.dart';
 
 class BloodDonationHistory{
@@ -62,7 +63,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
    var data = await http.post(API_URL,body: {
       'id':id
     });
-  // print(data.body);
       if (data.statusCode == 200) {
         var jsonData = json.decode(data.body);
 
@@ -282,10 +282,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               padding: EdgeInsets.all(10.0),
                               child: GestureDetector(
                                   onTap: () {
-
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (BuildContext context) => AddDonationHistory()));
                                   },
                                   child: Text(
-                                    "Set",
+                                    "Add New Donation",
                                     style: TextStyle(
                                         fontSize: 15.0, color: Colors.blue),
                                     textAlign: TextAlign.right,
@@ -453,8 +454,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<bool> _onBackPressed() {
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+    Navigator.of(context).pop();
     false;
   }
 }

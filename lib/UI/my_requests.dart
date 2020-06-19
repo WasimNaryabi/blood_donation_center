@@ -8,13 +8,14 @@ import 'post_blood_request.dart';
 import 'package:http/http.dart' as http;
 
 class BloodRequests{
-  var name,contact,message,bloodgroup,date,units,address,city;
+  var id,name,contact,message,bloodgroup,date,units,address,city;
 
-  BloodRequests({this.name, this.contact, this.message, this.bloodgroup,
+  BloodRequests({this.id,this.name, this.contact, this.message, this.bloodgroup,
     this.date, this.units, this.address, this.city});
 
   factory BloodRequests.fromJson(Map<String, dynamic> json){
     return BloodRequests(
+      id:json['id'],
       name: json['name'].toString(),
       message: json['message'].toString(),
       contact: json['contact'].toString(),
@@ -88,7 +89,7 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
         ),
         backgroundColor: Colors.redAccent,
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.red,
           child: Icon(Icons.add),
           elevation: 6,
           tooltip: "Add new blood request",
@@ -336,7 +337,6 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
                                                     ],),
                                                   ),
                                                 ),
-
                                                 Expanded(
                                                   child:Container(
                                                     child: Row(children: <Widget>[
@@ -364,9 +364,31 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
                                                   ),
                                                 ),
 
-
                                               ],
                                             ),
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.all(5.0),
+                                              child:Row(
+                                                children: <Widget>[
+                                                  Expanded(
+                                                      child: Container(),
+                                                  ),
+                                                  Expanded(
+                                                      child:  RaisedButton(
+                                                        color: Colors.blue,
+                                                        child: Text("Delete",style: TextStyle(fontSize: 15.0,color: Colors.white),),
+                                                        onPressed: (){
+                                                          var id =snapshot.data[index].id;
+                                                          _deleteRequest(id);
+                                                        },
+                                                      )
+                                                  ),
+                                                  Expanded(
+                                                    child: Container(),
+                                                  ),
+                                                ],
+                                              )
                                           ),
 
                                         ],
@@ -393,8 +415,11 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
   }
 
   Future<bool> _onBackPressed() {
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+    Navigator.of(context).pop();
     false;
+  }
+
+  _deleteRequest(id){
+
   }
 }

@@ -36,7 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController _addressController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  final _formKey1 = GlobalKey<FormState>();
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   String selectedValues;
@@ -313,6 +313,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 canvasColor: Colors.red,
                                               ),
                                               child: DropdownButton(
+                                                underline: SizedBox(),
                                                 isExpanded: true,
                                                 icon: Icon(
                                                   Icons.arrow_drop_down,
@@ -533,11 +534,6 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
                     Text(""),
-                    Text(""),
-                    Text(
-                      "This app is created by Wasim Ahmad",
-                      style: TextStyle(color: Colors.white),
-                    ),
                     Text(""),
                   ],
                 ),

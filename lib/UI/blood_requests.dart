@@ -10,13 +10,14 @@ import 'package:url_launcher/url_launcher.dart';
 import 'signup_screen.dart';
 
 class BloodRequests{
-  var name,contact,message,bloodgroup,date,units,address,city;
+  var id,name,contact,message,bloodgroup,date,units,address,city;
 
-  BloodRequests({this.name, this.contact, this.message, this.bloodgroup,
+  BloodRequests({this.id,this.name, this.contact, this.message, this.bloodgroup,
     this.date, this.units, this.address, this.city});
 
   factory BloodRequests.fromJson(Map<String, dynamic> json){
     return BloodRequests(
+      id:json['id'].toString(),
       name: json['name'].toString(),
       contact: json['contact'].toString(),
       message: json['message'].toString(),
@@ -46,8 +47,26 @@ class _BloodRequestState extends State<BloodRequest> {
 
   var list_lenght;
 
+  var currentId;
+
   String text = '';
   String subject = '';
+
+  var id;
+
+  _getPreferences() async {
+    var sharedPrefs = await SharedPreferences.getInstance();
+    id = sharedPrefs.getString('id');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getPreferences().whenComplete(() {
+      setState(() {
+      });
+    });
+  }
 
   share(BuildContext context) {
     final RenderBox box = context.findRenderObject();
@@ -126,6 +145,7 @@ class _BloodRequestState extends State<BloodRequest> {
                               return ListView.builder(
                                   itemCount: list_lenght,
                                   itemBuilder: (BuildContext context, int index){
+                                    currentId =snapshot.data[index].id;
                                     return  Container(
                                       margin: EdgeInsets.only(bottom: 5.0,top: 5.0),
                                       padding: EdgeInsets.all(1.0),
@@ -144,7 +164,7 @@ class _BloodRequestState extends State<BloodRequest> {
                                         children: <Widget>[
                                           Container(
                                             decoration: BoxDecoration(
-                                                color: Colors.red,
+                                                color:getColor(currentId),
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(1.0)),
                                                 boxShadow: [
@@ -428,9 +448,16 @@ class _BloodRequestState extends State<BloodRequest> {
   }
 
   Future<bool> _onBackPressed() {
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+    Navigator.of(context).pop();
     false;
+  }
+
+  Color getColor(String selector) {
+    if (selector  == id) {
+      return Colors.amber;
+    } else {
+      return Colors.red;
+    }
   }
 
 }
