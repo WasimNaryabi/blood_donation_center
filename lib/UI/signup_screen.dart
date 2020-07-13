@@ -5,6 +5,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mailer2/mailer.dart';
 
 import 'login_screen.dart';
 
@@ -506,6 +507,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                     bloodgroup,
                                                     address,
                                                     city);
+
                                               }
                                             });
                                           }
@@ -542,6 +544,8 @@ class _SignupScreenState extends State<SignupScreen> {
           )),
     );
   }
+
+
 
   _memberRegistration(
       name, email, password, contact, bloodgroup, address, city) {

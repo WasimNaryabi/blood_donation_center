@@ -141,20 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child:Text(name,style: TextStyle(color: Colors.white,fontSize: 18.0),)
                             ),
                           ),
-                          Expanded(
-                            child:  Container(
-                              margin: EdgeInsets.all(10.0),
-                              decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0))
-                              ),
-                              child: Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child:Text("Update",style: TextStyle(color: Colors.white),
-                                  textAlign: TextAlign.center,)
-                              ),
-                            ),
-                          )
+
                         ],
                       ),
                     ),
@@ -337,7 +324,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 BorderRadius.all(Radius.circular(1.0)),
                               ),
                               child: Center(
-                                child: Text("Loading....",style: TextStyle(color:Colors.red),),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    CircularProgressIndicator(backgroundColor: Colors.red),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(
+                                      "Loading...",
+                                      style: TextStyle(color: Colors.red),
+                                    )
+                                  ],
+                                ),
                               ),
                             );
                           }else {

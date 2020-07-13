@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 import 'package:intl/intl.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 import 'my_requests.dart';
 
@@ -21,7 +22,7 @@ class _PostBloodrequestState extends State<PostBloodrequest> {
   String _selectedBloodGroup="A+";
 
   TextEditingController _nameController= TextEditingController();
-  TextEditingController _contactController=TextEditingController();
+  TextEditingController _contactController=MaskedTextController(mask: "0000-0000000");
   TextEditingController _messageController=TextEditingController();
   TextEditingController _unitsController=TextEditingController();
   TextEditingController _addressController=TextEditingController();
@@ -122,7 +123,13 @@ class _PostBloodrequestState extends State<PostBloodrequest> {
                                   child:TextFormField(
                                     keyboardType: TextInputType.number,
                                     controller: _contactController,
-                                    validator: (value) => value.isEmpty?'Contact is required':null,
+                                    validator: (value) {if (value.isEmpty) {
+                              return 'Contact is Required';
+                              } else if (value.length < 12) {
+                        return 'Enter valid phone number e.g (0300-0000000)';
+                        } else {
+                        return null;
+                        }},
                                     decoration: InputDecoration(
                                       labelText: "Contact",
                                       hintText: "Contact",

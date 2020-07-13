@@ -49,10 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
       child:Center(
         child: Column(
           children: <Widget>[
-            Image.asset('images/logo.png'),
-            Text(""),
-            Text("Blood Donation",style: TextStyle(fontSize: 22.0,color: Colors.white),),
-            Text("Center",style: TextStyle(fontSize: 22.0,color: Colors.white)),
+
           ],
         ),
       ),

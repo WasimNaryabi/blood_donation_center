@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import '../main.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
+import 'package:mailer2/mailer.dart';
 
 import 'blood_compatability.dart';
 import 'blood_requests.dart';
@@ -69,6 +70,15 @@ class _HomeScreenState extends State<HomeScreen> {
   var list_lenght;
 
   var currentId;
+
+  var options = new GmailSmtpOptions()
+    ..username = 'blood.donation.center2020@gmail.com'
+    ..password = 'Blood2020'; // Note: if you have Google's "app specific passwords" enabled,
+  // you need to use one of those here.
+
+  // How you use and store passwords is up to you. Beware of storing passwords in plain.
+
+
 
   _getPreferences() async {
     var sharedPrefs = await SharedPreferences.getInstance();
@@ -143,8 +153,20 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           backgroundColor: Colors.redAccent,
           drawer: Drawer(
+
             child: ListView(
               children: <Widget>[
+                Container(
+                  height: 80.0,
+                  child: UserAccountsDrawerHeader(
+                     decoration: BoxDecoration(
+                       color:Colors.red,
+                     ),
+                    accountName: Text(name),
+                    accountEmail: Text(email),
+                  ),
+
+                ),
                 ListTile(
                   leading: Icon(
                     Icons.person,
@@ -156,6 +178,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => ProfileScreen()));
                   },
+                ),
+                Divider(
+                  color: Colors.grey,
                 ),
                 ListTile(
                   leading: Icon(
@@ -169,6 +194,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (BuildContext context) => BloodRequest()));
                   },
                 ),
+                Divider(
+                  color: Colors.grey,
+                ),
                 ListTile(
                   leading: Icon(
                     Icons.note,
@@ -180,6 +208,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => MyBloodRequest()));
                   },
+                ),
+                Divider(
+                  color: Colors.grey,
                 ),
                 ListTile(
                   leading: Icon(
@@ -194,6 +225,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             BloodCompatability()));
                   },
                 ),
+                Divider(
+                  color: Colors.grey,
+                ),
                 ListTile(
                   leading: Icon(
                     Icons.chevron_right,
@@ -207,6 +241,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => LoginScreen()));
                   },
+                ),
+                Divider(
+                  color: Colors.grey,
                 ),
               ],
             ),
@@ -249,6 +286,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: EdgeInsets.all(10.0),
                                   child: GestureDetector(
                                       onTap: () {
+
+                                        // Create our email transport.
+                                        var emailTransport = new SmtpTransport(options);
+
+                                        // Create our mail/envelope.
+                                        var envelope = new Envelope()
+                                          /*..from = 'foo@bar.com'*/
+                                          ..recipients.add(email)
+                                          /*..bccRecipients.add('hidden@recipient.com')*/
+                                          ..subject = 'Testing the Dart Mailer library'
+                                          ..text = 'This is a cool email message. Whats up?'
+                                          ..html = '<h1>Test</h1><p>Hey!</p>';
+
+                                        // Email it.
+                                        emailTransport.send(envelope)
+                                            .then((envelope) => print('Email sent! to $email'))
+                                            .catchError((e) => print('Error occurred: $e'));
+
                                         Navigator.of(context).push(MaterialPageRoute(
                                             builder: (BuildContext context) => ProfileScreen()));
                                       },
@@ -368,18 +423,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         children: <Widget>[
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Expanded(
-                                child: Padding(
+                              Padding(
                                     padding: EdgeInsets.all(10.0),
                                     child: Text(
-                                      "Blood Requests",
+                                      "New Blood Requests",
                                       style: TextStyle(
                                           color: Colors.red, fontSize: 20.0),
                                     )),
-                              ),
-                              Expanded(
-                                child: Padding(
+
+                              Padding(
                                   padding: EdgeInsets.all(10.0),
                                   child: GestureDetector(
                                       onTap: () {
@@ -396,7 +450,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         textAlign: TextAlign.right,
                                       )),
                                 ),
-                              )
+
                             ],
                           ),
                           Expanded(
@@ -407,7 +461,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                   print(snapshot.data);
                                   return Container(
                                     child: Center(
-                                      child: Text("Loading....",style: TextStyle(color:Colors.red),),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          CircularProgressIndicator(backgroundColor: Colors.red),
+                                          SizedBox(
+                                            width: 10.0,
+                                          ),
+                                          Text(
+                                            "Loading...",
+                                            style: TextStyle(color: Colors.red),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   );
                                 }else {
@@ -425,6 +491,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: Column(
                                         children: <Widget>[
                                           Container(
+                                            margin:EdgeInsets.only(bottom: 10.0),
                                             decoration: BoxDecoration(
                                                 color: getColor(currentId),
                                                 borderRadius: BorderRadius.all(
@@ -463,6 +530,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ],
                                             ),
                                           ),
+
                                           Container(
                                             child: Row(
                                               children: <Widget>[
@@ -487,7 +555,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               size: 18,
                                                             )),
                                                       ),
-                                                      Text(snapshot.data[index].message),
+                                                     Flexible(
+                                                       child:  Text(snapshot.data[index].message),
+                                                     )
                                                     ],),
                                                   ) ,
                                                 ),
@@ -495,6 +565,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ],
                                             ),
                                           ),
+                                          Divider(
+                                            color: Colors.grey,
+                                          ),
+
                                           Container(
                                             child: Row(
                                               children: <Widget>[
@@ -514,15 +588,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         child: Padding(
                                                             padding: EdgeInsets.all(1.0),
                                                             child: Icon(
-                                                              Icons.local_hospital,
+                                                              Icons.place,
                                                               color: Colors.white,
                                                               size: 18,
                                                             )),
                                                       ),
-                                                      Text(snapshot.data[index].address),
+                                                      Flexible(
+                                                        child: Text(snapshot.data[index].address),
+                                                      )
                                                     ],),
                                                   ) ,
                                                 ),
+
+                                              ],
+                                            ),
+                                          ),
+                                          Divider(
+                                            color: Colors.grey,
+                                          ),
+
+                                          Container(
+                                            child: Row(
+                                              children: <Widget>[
                                                 Expanded(
                                                   child:Container(
                                                     child: Row(children: <Widget>[
@@ -552,6 +639,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ],
                                             ),
                                           ),
+                                          Divider(
+                                            color: Colors.grey,
+                                          ),
+
                                           Container(
                                             child: Row(
                                               children: <Widget>[
@@ -613,6 +704,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               ],
                                             ),
+                                          ),
+                                          Divider(
+                                            color: Colors.grey,
                                           ),
                                           Container(
                                             child: Row(
@@ -685,9 +779,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ],
                                             ),
                                           ),
+
                                           SizedBox(
                                             height: 10,
                                           ),
+
                                         ],
                                       ),
                                     );

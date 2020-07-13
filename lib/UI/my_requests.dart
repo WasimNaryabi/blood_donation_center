@@ -124,7 +124,19 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
                                   BorderRadius.all(Radius.circular(1.0)),
                                 ),
                                 child: Center(
-                                  child: Text("Loading....",style: TextStyle(color:Colors.red),),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      CircularProgressIndicator(backgroundColor: Colors.red),
+                                      SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Text(
+                                        "Loading...",
+                                        style: TextStyle(color: Colors.red),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               );
                             }else {
@@ -186,6 +198,9 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
                                               ],
                                             ),
                                           ),
+                                          Divider(
+                                            color: Colors.grey,
+                                          ),
                                           Container(
                                             child: Row(
                                               children: <Widget>[
@@ -210,13 +225,18 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
                                                               size: 18,
                                                             )),
                                                       ),
-                                                      Text(snapshot.data[index].message),
+                                                      Flexible(
+                                                        child:  Text(snapshot.data[index].message),
+                                                      )
                                                     ],),
                                                   ) ,
                                                 ),
 
                                               ],
                                             ),
+                                          ),
+                                          Divider(
+                                            color: Colors.grey,
                                           ),
                                           Container(
                                             child: Row(
@@ -275,6 +295,9 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
                                               ],
                                             ),
                                           ),
+                                          Divider(
+                                            color: Colors.grey,
+                                          ),
                                           Container(
                                             child: Row(
                                               children: <Widget>[
@@ -294,18 +317,23 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
                                                         child: Padding(
                                                             padding: EdgeInsets.all(1.0),
                                                             child: Icon(
-                                                              Icons.local_hospital,
+                                                              Icons.place,
                                                               color: Colors.white,
                                                               size: 18,
                                                             )),
                                                       ),
-                                                      Text(snapshot.data[index].address),
+                                                      Flexible(
+                                                        child: Text(snapshot.data[index].address),
+                                                      )
                                                     ],),
                                                   ) ,
                                                 ),
 
                                               ],
                                             ),
+                                          ),
+                                          Divider(
+                                            color: Colors.grey,
                                           ),
                                           Container(
                                             child: Row(
@@ -366,6 +394,9 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
 
                                               ],
                                             ),
+                                          ),
+                                          Divider(
+                                            color: Colors.grey,
                                           ),
                                           Padding(
                                               padding: EdgeInsets.all(5.0),
