@@ -8,7 +8,6 @@ import '../main.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:mailer2/mailer.dart';
-
 import 'blood_compatability.dart';
 import 'blood_requests.dart';
 import 'login_screen.dart';
