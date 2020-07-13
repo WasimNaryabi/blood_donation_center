@@ -275,6 +275,7 @@ class _AddDonationHistoryState extends State<AddDonationHistory> {
         _showDialog("Error Message", message);
       } else {
         _scaffoldKey.currentState.hideCurrentSnackBar();
+        _save('lastdonation', date);
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) => ProfileScreen()));
         _showDialog('Success Message', message);
@@ -320,7 +321,7 @@ class _AddDonationHistoryState extends State<AddDonationHistory> {
         children: <Widget>[
           CircularProgressIndicator(backgroundColor: Colors.red),
           Text(
-            "  Your New Donation adding...",
+            "Your New Donation adding...",
             style: TextStyle(color: Colors.red),
           )
         ],
@@ -328,6 +329,19 @@ class _AddDonationHistoryState extends State<AddDonationHistory> {
     ));
   }
 
-
+  _save(String key, dynamic value) async {
+    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
+    if (value is bool) {
+      sharedPrefs.setBool(key, value);
+    } else if (value is String) {
+      sharedPrefs.setString(key, value);
+    } else if (value is int) {
+      sharedPrefs.setInt(key, value);
+    } else if (value is double) {
+      sharedPrefs.setDouble(key, value);
+    } else if (value is List<String>) {
+      sharedPrefs.setStringList(key, value);
+    }
+  }
 
 }

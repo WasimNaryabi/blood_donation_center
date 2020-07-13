@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'forgetpassword.dart';
 import 'home_screen.dart';
 import 'signup_screen.dart';
 
@@ -282,6 +283,29 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ),
                                       ),
                                     )),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding:
+                                      EdgeInsets.only(right: 10.0,
+                                          left: 10.0,top: 5.0, bottom: 1.0),
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).pushReplacement(
+                                                MaterialPageRoute(
+                                                    builder:
+                                                        (BuildContext context) =>
+                                                            ForgetPasswordScreen()));
+                                          },
+                                          child: Text(
+                                            "Forget Password?",
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                                fontSize: 15.0, color: Colors.blueAccent),
+                                          )),
+                                    ),
+                                  ],
+                                ),
                                 Padding(
                                     padding: EdgeInsets.all(10.0),
                                     child: Row(

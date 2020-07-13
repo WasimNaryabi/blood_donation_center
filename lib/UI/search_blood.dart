@@ -192,7 +192,19 @@ class _SearchBloodState extends State<SearchBlood> {
                                 BorderRadius.all(Radius.circular(1.0)),
                               ),
                               child: Center(
-                                child: Text("Loading....",style: TextStyle(color:Colors.red),),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    CircularProgressIndicator(backgroundColor: Colors.red),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(
+                                      "Loading...",
+                                      style: TextStyle(color: Colors.red),
+                                    )
+                                  ],
+                                ),
                               ),
                             );
                           }else {

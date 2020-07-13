@@ -15,7 +15,7 @@ class BloodRequests{
 
   factory BloodRequests.fromJson(Map<String, dynamic> json){
     return BloodRequests(
-      id:json['id'],
+      id:json['id'].toString(),
       name: json['name'].toString(),
       message: json['message'].toString(),
       contact: json['contact'].toString(),
@@ -40,6 +40,9 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
 
   var id;
 
+
+  static final DELETE_API_URL =
+      'http://www.fonesolutions31.com/BloodDonationCenterApi/apies/delete-request.php';
   _getPreferences() async {
     var sharedPrefs = await SharedPreferences.getInstance();
     id = sharedPrefs.getString('id');
@@ -89,7 +92,7 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
         ),
         backgroundColor: Colors.redAccent,
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.blueAccent,
           child: Icon(Icons.add),
           elevation: 6,
           tooltip: "Add new blood request",
@@ -139,7 +142,28 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
                                   ),
                                 ),
                               );
-                            }else {
+                            }else if(list_lenght < 1){
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(1.0)),
+                                ),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+
+                                      Text(
+                                        "You not post any Request",
+                                        style: TextStyle(color: Colors.red),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                            else{
                               return ListView.builder(
                                   itemCount: list_lenght,
                                   itemBuilder: (BuildContext context, int index){
@@ -410,7 +434,9 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
                                                         color: Colors.blue,
                                                         child: Text("Delete",style: TextStyle(fontSize: 15.0,color: Colors.white),),
                                                         onPressed: (){
+
                                                           var id =snapshot.data[index].id;
+                                                          print("Request ID:$id");
                                                           _deleteRequest(id);
                                                         },
                                                       )
@@ -452,5 +478,67 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
 
   _deleteRequest(id){
 
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Are you sure?'),
+        content: Text('Do you want to delete this request'),
+        actions: <Widget>[
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop(false);
+            },
+            child: Text("NO",style: TextStyle(
+                color: Colors.white,
+                backgroundColor: Colors.blue,
+                fontSize: 20.0),),
+          ),
+          SizedBox(height: 16),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop(false);
+              print("Request ID:$id");
+              _deleteBloodRequest(id);
+            },
+            child: Text("YES",style: TextStyle(
+                color: Colors.white,
+                backgroundColor: Colors.red,
+                fontSize: 20.0),),
+          ),
+        ],
+      ),
+    ) ??
+        false;
+
+  }
+
+  _deleteBloodRequest(id){
+    http.post(DELETE_API_URL,
+        body: {'id': id}).then((response) {
+      var responseerror = response.statusCode;
+      print(responseerror);
+
+      Map mapRes = json.decode(response.body);
+      var error = mapRes['success'];
+      var message = mapRes['message'];
+      if (error == 0) {
+        _showDialog("Error Message", message);
+      } else {
+        _showDialog('Success Message', message);
+      }
+    });
+  }
+
+  _showDialog(title, text) {
+    var alertDialog = AlertDialog(
+      title: Text(title),
+      content: Text(text),
+      actions: <Widget>[],
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
   }
 }

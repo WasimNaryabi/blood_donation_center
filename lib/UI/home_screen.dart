@@ -287,21 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap: () {
 
                                         // Create our email transport.
-                                        var emailTransport = new SmtpTransport(options);
 
-                                        // Create our mail/envelope.
-                                        var envelope = new Envelope()
-                                          /*..from = 'foo@bar.com'*/
-                                          ..recipients.add(email)
-                                          /*..bccRecipients.add('hidden@recipient.com')*/
-                                          ..subject = 'Testing the Dart Mailer library'
-                                          ..text = 'This is a cool email message. Whats up?'
-                                          ..html = '<h1>Test</h1><p>Hey!</p>';
-
-                                        // Email it.
-                                        emailTransport.send(envelope)
-                                            .then((envelope) => print('Email sent! to $email'))
-                                            .catchError((e) => print('Error occurred: $e'));
 
                                         Navigator.of(context).push(MaterialPageRoute(
                                             builder: (BuildContext context) => ProfileScreen()));

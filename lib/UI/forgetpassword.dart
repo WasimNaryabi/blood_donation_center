@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:blooddonationcenter/UI/login_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:mailer2/mailer.dart';
 import 'home_screen.dart';
 import 'signup_screen.dart';
 
@@ -82,47 +83,23 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
 
   var id;
+  var options = new GmailSmtpOptions()
+    ..username = 'blood.donation.center2020@gmail.com'
+    ..password = 'Blood2020';
 
-  var name;
-
-  var email;
-
-  var contact;
-
-  var bloodgroup;
-
-  var address;
-
-  var city;
-
-  var lastdonation;
-  var islogined;
-
-  static final CREATE_POST_URL =
-      'http://www.fonesolutions31.com/BloodDonationCenterApi/apies/member-login.php';
+  static final FORGET_PASSWORD_URL =
+      'http://www.fonesolutions31.com/BloodDonationCenterApi/apies/forgetpassword.php';
 
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
 
   final _formKey1 = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  String selectedValues;
-  bool passwordVisible;
 
-  bool isConnected;
-  var result;
 
   @override
   void initState() {
-    passwordVisible = true;
-    _getPreferences().whenComplete(() {
-      setState(() {});
-      if (islogined) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
-      }
-    });
+
   }
 
   @override
@@ -146,7 +123,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     ),
                     Text(""),
                     Text(
-                      "Member Login",
+                      "Forget Password",
                       style: TextStyle(fontSize: 22.0, color: Colors.white),
                     ),
                     Padding(
@@ -216,72 +193,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                             BorderRadius.circular(7.0)),
                                       ),
                                     )),
-                                Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 20.0,
-                                        right: 10.0,
-                                        left: 10.0,
-                                        bottom: 10.0),
-                                    child: TextFormField(
-                                      //autofocus: false,
-                                      obscureText: passwordVisible,
-                                      controller: _passwordController,
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          return 'Password is Required';
-                                        } else if (value.length < 8) {
-                                          return 'Password must be atleast 8 letters';
-                                        } else {
-                                          return null;
-                                        }
-                                      },
-                                      decoration: InputDecoration(
-                                        //icon: Icon(Icons.mail),
-                                        labelText: "Password",
-                                        hintText: "Password",
-                                        enabledBorder: const OutlineInputBorder(
-                                          // width: 0.0 produces a thin "hairline" border
-                                          borderSide: const BorderSide(
-                                              color: Colors.red, width: 0.0),
-                                        ),
-                                        labelStyle:
-                                        new TextStyle(color: Colors.red),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(7.0)),
-                                          borderSide: BorderSide(
-                                              width: 1, color: Colors.red),
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(7.0)),
-                                          borderSide: BorderSide(
-                                              width: 1, color: Colors.blue),
-                                        ),
-                                        errorStyle: TextStyle(
-                                          color: Colors.blue,
-                                        ),
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(7.0)),
-                                        suffixIcon: IconButton(
-                                          icon: Icon(
-                                            // Based on passwordVisible state choose the icon
-                                            passwordVisible
-                                                ? Icons.visibility_off
-                                                : Icons.visibility,
-                                            color: Colors.red,
-                                          ),
-                                          onPressed: () {
-                                            // Update the state i.e. toogle the state of passwordVisible variable
-                                            setState(() {
-                                              passwordVisible =
-                                              !passwordVisible;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    )),
+
                                 Padding(
                                     padding: EdgeInsets.all(10.0),
                                     child: Row(
@@ -290,7 +202,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                             child: RaisedButton(
                                                 color: Colors.blue,
                                                 child: Text(
-                                                  "Login",
+                                                  "Check",
                                                   style: TextStyle(
                                                       fontSize: 22.0,
                                                       color: Colors.white),
@@ -303,16 +215,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                                     _checkConnectivity()
                                                         .then((result) async {
                                                       if (result == true) {
-                                                        _showSnackbar();
                                                         String email =
                                                             _emailController
                                                                 .text;
-                                                        String password =
-                                                            _passwordController
-                                                                .text;
-
-                                                        _memberLogin(
-                                                            email, password);
+                                                        print("Email: $email");
+                                                        _SendPassword(
+                                                            email);
                                                       }
                                                     });
                                                   }
@@ -328,10 +236,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                             MaterialPageRoute(
                                                 builder:
                                                     (BuildContext context) =>
-                                                    SignupScreen()));
+                                                    LoginScreen()));
                                       },
                                       child: Text(
-                                        "New Member? Create Account",
+                                        "Go to Login",
                                         style: TextStyle(
                                             fontSize: 15.0, color: Colors.red),
                                       )),
@@ -348,82 +256,48 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     );
   }
 
-  _getPreferences() async {
-    var sharedPrefs = await SharedPreferences.getInstance(); // Save a value
-    //preferences.setString('value_key', 'hello preferences');// Retrieve value later
-    id = sharedPrefs.getString('id');
-    name = sharedPrefs.getString('name');
-    email = sharedPrefs.getString('email');
-    contact = sharedPrefs.getString('contact');
-    bloodgroup = sharedPrefs.getString('bloodgroup');
-    address = sharedPrefs.getString('address');
-    city = sharedPrefs.getString('city');
-    lastdonation = sharedPrefs.getString('lastdonation');
-    islogined = sharedPrefs.getBool('islogin');
+
+  _SendEmail(email,password){
+    var emailTransport = new SmtpTransport(options);
+
+    // Create our mail/envelope.
+    var envelope = new Envelope()
+    /*..from = 'foo@bar.com'*/
+      ..recipients.add(email)
+    /*..bccRecipients.add('hidden@recipient.com')*/
+      ..subject = 'Your Account Password'
+      ..text = 'Asalam O Alikom Here is your password.'
+      ..html = '<h2>Asalam O Alikom Here is your password.</h2><h4>Email: </h4><p>$email</p><h4>Password: </h4><p>$password</p>';
+
+    // Email it.
+    emailTransport.send(envelope)
+        .then((envelope) => print('Email sent! to $email'))
+        .catchError((e) => print('Error occurred: $e'));
   }
 
-  _memberLogin(email, password) {
-    http.post(CREATE_POST_URL,
-        body: {'email': email, 'password': password}).then((response) {
+  _SendPassword(email) {
+    http.post(FORGET_PASSWORD_URL,
+        body: {'email': email}).then((response) {
       var responseerror = response.statusCode;
       print(responseerror);
-
       Map mapRes = json.decode(response.body);
-      var error = mapRes['error'];
-
-      if (error) {
-        _scaffoldKey.currentState.hideCurrentSnackBar();
-        _showDialog("Message", "Invalide Eamil or Password \ntry again");
+      var error = mapRes['success'];
+      var password =mapRes['password'];
+      if (error == 0) {
+        print("Email :: => $email");
+        print("Password :: => $password");
+        _showDialog("Message", "No user found on this email");
       } else {
-        _scaffoldKey.currentState.hideCurrentSnackBar();
-        var id = mapRes['member_id'];
-        var name = mapRes['name'];
-        var email = mapRes['email'];
-        var contact = mapRes['contact'];
-        var bloodgroup = mapRes['bloodgroup'];
-        var address = mapRes['address'];
-        var city = mapRes['city'];
-        var lastdonation = mapRes['lastdonation'];
-
-        _save('id', id);
-        _save('name', name);
-        _save('email', email);
-        _save('contact', contact);
-        _save('bloodgroup', bloodgroup);
-        _save('address', address);
-        _save('city', city);
-        _save('lastdonation', lastdonation);
-        _save('islogin', true);
-
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+        print("Email :: => $email");
+        print("Password :: => $password");
+        _SendEmail(email,password);
+        _showDialog("Message", "Please Check your email.");
       }
     });
   }
 
   Future<bool> _onBackPressed() {
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Are you sure?'),
-        content: Text('Do you want to exit an App'),
-        actions: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop(false);
-            },
-            child: Text("NO"),
-          ),
-          SizedBox(height: 16),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop(true);
-            },
-            child: Text("YES"),
-          ),
-        ],
-      ),
-    ) ??
+
         false;
   }
 
@@ -453,34 +327,5 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     }
   }
 
-  _showSnackbar() {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
-      backgroundColor: Colors.white,
-      content: Row(
-        children: <Widget>[
-          CircularProgressIndicator(backgroundColor: Colors.red),
-          Text(
-            "  Signing-In...",
-            style: TextStyle(color: Colors.red),
-          )
-        ],
-      ),
-    ));
-  }
-
-  _save(String key, dynamic value) async {
-    final SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
-    if (value is bool) {
-      sharedPrefs.setBool(key, value);
-    } else if (value is String) {
-      sharedPrefs.setString(key, value);
-    } else if (value is int) {
-      sharedPrefs.setInt(key, value);
-    } else if (value is double) {
-      sharedPrefs.setDouble(key, value);
-    } else if (value is List<String>) {
-      sharedPrefs.setStringList(key, value);
-    }
-  }
 
 }
