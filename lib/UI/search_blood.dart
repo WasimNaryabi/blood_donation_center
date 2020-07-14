@@ -148,7 +148,6 @@ class _SearchBloodState extends State<SearchBlood> {
           child: Column(
             children: <Widget>[
               Container(
-                height: MediaQuery.of(context).size.height/12,
                 margin: EdgeInsets.all(5.0),
 
                 child: Row(

@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:mailer2/mailer.dart';
 
 import 'login_screen.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -67,7 +69,8 @@ class _SignupScreenState extends State<SignupScreen> {
       "http://www.fonesolutions31.com/BloodDonationCenterApi/apies/add-member.php";
 
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _contactController = TextEditingController();
+ /* EditingController _contactController = MaskedEditingController(mask: "0000-0000000");*/
+  TextEditingController _contactController = MaskedTextController(mask: "0000-0000000");
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _addressController = TextEditingController();

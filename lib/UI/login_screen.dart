@@ -76,6 +76,8 @@ class _LoginScreenState extends State<LoginScreen> {
             child: ListView(
               children: <Widget>[
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(""),
                     Text(""),
