@@ -17,14 +17,45 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   static var _bloodGroup = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   static var _cityname = [
-    'Peshawar',
-    'Lahor',
-    'Karachi',
-    'Quitta',
+    'Abbottabad',
+    'Bannu',
+    'Battagram',
+    'Batkhela',
+    'Charsadda',
+    'Chitral',
+    'Dera Ismail Khan',
+    'Dir',
+    'Faisalabad',
+    'Gujranwala',
+    'Gujrat',
+    'Hangu',
+    'Haripur',
+    'Hyderabad',
     'Islamabad',
-    'Hangu'
+    'Jhang',
+    'Jhelum',
+    'Karak',
+    'Karachi',
+    'Kohat',
+    'Lakki Marwat',
+    'Lahore',
+    'Mansehra',
+    'Mianwali',
+    'Multan',
+    'Murree',
+    'Mardan',
+    'Nowshera',
+    'Peshawar',
+    'Quitta',
+    'Rawalpindi',
+    'Sargodha',
+    'Sialkot',
+    'Swabi',
+    'Swat',
+    'Tank',
+    'Taxila',
   ];
-  String _selectedValue = "Hangu";
+  String _selectedValue = "Abbottabad";
   String _selectedBloodGroup = "A+";
 
   static final API_URL =

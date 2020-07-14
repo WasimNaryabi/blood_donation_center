@@ -39,8 +39,46 @@ class SearchBlood extends StatefulWidget {
 
 class _SearchBloodState extends State<SearchBlood> {
 
-  static var _cityname = ['Peshawar','Lahor','Karachi','Quitta','Islamabad','Hangu'];
-  String _selectedValue="Peshawar";
+  static var _cityname = [
+    'Abbottabad',
+    'Bannu',
+    'Battagram',
+    'Batkhela',
+    'Charsadda',
+    'Chitral',
+    'Dera Ismail Khan',
+    'Dir',
+    'Faisalabad',
+    'Gujranwala',
+    'Gujrat',
+    'Hangu',
+    'Haripur',
+    'Hyderabad',
+    'Islamabad',
+    'Jhang',
+    'Jhelum',
+    'Karak',
+    'Karachi',
+    'Kohat',
+    'Lakki Marwat',
+    'Lahore',
+    'Mansehra',
+    'Mianwali',
+    'Multan',
+    'Murree',
+    'Mardan',
+    'Nowshera',
+    'Peshawar',
+    'Quitta',
+    'Rawalpindi',
+    'Sargodha',
+    'Sialkot',
+    'Swabi',
+    'Swat',
+    'Tank',
+    'Taxila',
+  ];
+  String _selectedValue="Abbottabad";
 
   var id;
 
@@ -107,7 +145,7 @@ class _SearchBloodState extends State<SearchBlood> {
         ),
         backgroundColor: Colors.redAccent,
         body: Container(
-          child: ListView(
+          child: Column(
             children: <Widget>[
               Container(
                 height: MediaQuery.of(context).size.height/12,
@@ -173,238 +211,263 @@ class _SearchBloodState extends State<SearchBlood> {
                   ],
                 ),
               ),
-              Container(
-                height: MediaQuery.of(context).size.height / 1.15,
-                decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: FutureBuilder<List<AllMembers>>(
-                        future: _getAllMembers(),
-                        builder: (BuildContext context, AsyncSnapshot snapshot){
-                          if(snapshot.data == null){
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(1.0)),
-                              ),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    CircularProgressIndicator(backgroundColor: Colors.red),
-                                    SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Text(
-                                      "Loading...",
-                                      style: TextStyle(color: Colors.red),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          }else {
-                            return ListView.builder(
-                                itemCount: list_lenght,
-                                itemBuilder: (BuildContext context, int index){
-                                  return  Container(
-                                    margin: EdgeInsets.all(5.0),
-                                    padding: EdgeInsets.all(1.0),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black38,
-                                            spreadRadius: 1.0,
-                                            blurRadius: 1.0,
-                                          )
-                                        ]
-                                    ),
-                                    child: Column(
+              Expanded(
+                child: Container(
+                    height: MediaQuery.of(context).size.height / 1.15,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: FutureBuilder<List<AllMembers>>(
+                            future: _getAllMembers(),
+                            builder: (BuildContext context, AsyncSnapshot snapshot){
+                              if(snapshot.data == null){
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(1.0)),
+                                  ),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              color:Colors.red,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(1.0)),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black38,
-                                                  spreadRadius: 1.0,
-                                                  blurRadius: 1.0,
-                                                )
-                                              ]),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                child: Padding(
-                                                    padding: EdgeInsets.all(5.0),
-                                                    child: Text(
-                                                      snapshot.data[index].name,
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 18.0,
-                                                      fontWeight: FontWeight.bold),
-                                                    )),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                    padding: EdgeInsets.all(10.0),
-                                                    child: Text(
-                                                      snapshot.data[index].bloodgroup,
-                                                      style: TextStyle(
-                                                          color: Colors.red,
-                                                          backgroundColor: Colors.white,
-                                                          fontSize: 20.0),
-                                                      textAlign: TextAlign.right,
-                                                    )),
-                                              )
-
-                                            ],
-                                          ),
+                                        CircularProgressIndicator(backgroundColor: Colors.red),
+                                        SizedBox(
+                                          width: 10.0,
                                         ),
-                                        Container(
-                                          child: Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                child:Container(
-                                                  child: Row(children: <Widget>[
-                                                    Container(
-                                                      margin: EdgeInsets.all(5.0),
-                                                      width: 25.0,
-                                                      height: 25.0,
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.red,
-                                                          borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  50.0))),
-                                                      child: Padding(
-                                                          padding: EdgeInsets.all(1.0),
-                                                          child: Icon(
-                                                            Icons.calendar_today,
-                                                            color: Colors.white,
-                                                            size: 18,
-                                                          )),
-                                                    ),
-                                                    Text(snapshot.data[index].date),
-                                                  ],),
-                                                ) ,
-                                              ),
-
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          child: Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                child:Container(
-                                                  child: Row(children: <Widget>[
-                                                    Container(
-                                                      margin: EdgeInsets.all(5.0),
-                                                      width: 25.0,
-                                                      height: 25.0,
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.red,
-                                                          borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  50.0))),
-                                                      child: Padding(
-                                                          padding: EdgeInsets.all(1.0),
-                                                          child: Icon(
-                                                            Icons.local_hospital,
-                                                            color: Colors.white,
-                                                            size: 18,
-                                                          )),
-                                                    ),
-                                                    Text(snapshot.data[index].address),
-                                                  ],),
-                                                ) ,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          child: Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                child:Container(
-                                                  child: Row(children: <Widget>[
-                                                    Container(
-                                                      margin: EdgeInsets.all(5.0),
-                                                      width: 25.0,
-                                                      height: 25.0,
-                                                      decoration: BoxDecoration(
-                                                          color: Colors.red,
-                                                          borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  50.0))),
-                                                      child: Padding(
-                                                          padding: EdgeInsets.all(1.0),
-                                                          child: Icon(
-                                                            Icons.location_city,
-                                                            color: Colors.white,
-                                                            size: 18,
-                                                          )),
-                                                    ),
-                                                    Text(snapshot.data[index].city),
-                                                  ],),
-                                                ),
-                                              ),
-
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          child: Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                child:Container(
-
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child:Container(
-                                                  margin: EdgeInsets.all(5.0),
-                                                  width: 40.0,
-                                                  height: 40.0,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.blue,
-                                                      borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              50.0))),
-                                                  child: Padding(
-                                                      padding: EdgeInsets.all(1.0),
-                                                      child: IconButton(
-                                                          color: Colors.white,
-                                                          icon: Icon(Icons.call),
-                                                          onPressed: (){_Call(snapshot.data[index].contact.toString());}
-                                                      )),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                        Text(
+                                          "Loading...",
+                                          style: TextStyle(color: Colors.red),
+                                        )
                                       ],
                                     ),
-                                  );
-                                });
-                          }
-                        },
-                      ),
-                    ),
+                                  ),
+                                );
+                              }
 
-                  ],
-                ),
+                              else if(list_lenght < 1){
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(1.0)),
+                                  ),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+
+                                        Text(
+                                          "Noone Available in Selected city for this Blood Group",
+                                          style: TextStyle(color: Colors.red),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
+                              else {
+                                return ListView.builder(
+                                    itemCount: list_lenght,
+                                    itemBuilder: (BuildContext context, int index){
+                                      return  Container(
+                                        margin: EdgeInsets.all(5.0),
+                                        padding: EdgeInsets.all(1.0),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black38,
+                                                spreadRadius: 1.0,
+                                                blurRadius: 1.0,
+                                              )
+                                            ]
+                                        ),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  color:Colors.red,
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(1.0)),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black38,
+                                                      spreadRadius: 1.0,
+                                                      blurRadius: 1.0,
+                                                    )
+                                                  ]),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    child: Padding(
+                                                        padding: EdgeInsets.all(5.0),
+                                                        child: Text(
+                                                          snapshot.data[index].name,
+                                                          style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 18.0,
+                                                              fontWeight: FontWeight.bold),
+                                                        )),
+                                                  ),
+                                                  Expanded(
+                                                    child: Padding(
+                                                        padding: EdgeInsets.all(10.0),
+                                                        child: Text(
+                                                          snapshot.data[index].bloodgroup,
+                                                          style: TextStyle(
+                                                              color: Colors.red,
+                                                              backgroundColor: Colors.white,
+                                                              fontSize: 20.0),
+                                                          textAlign: TextAlign.right,
+                                                        )),
+                                                  )
+
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    child:Container(
+                                                      child: Row(children: <Widget>[
+                                                        Container(
+                                                          margin: EdgeInsets.all(5.0),
+                                                          width: 25.0,
+                                                          height: 25.0,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.red,
+                                                              borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      50.0))),
+                                                          child: Padding(
+                                                              padding: EdgeInsets.all(1.0),
+                                                              child: Icon(
+                                                                Icons.calendar_today,
+                                                                color: Colors.white,
+                                                                size: 18,
+                                                              )),
+                                                        ),
+                                                        Text(snapshot.data[index].date),
+                                                      ],),
+                                                    ) ,
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    child:Container(
+                                                      child: Row(children: <Widget>[
+                                                        Container(
+                                                          margin: EdgeInsets.all(5.0),
+                                                          width: 25.0,
+                                                          height: 25.0,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.red,
+                                                              borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      50.0))),
+                                                          child: Padding(
+                                                              padding: EdgeInsets.all(1.0),
+                                                              child: Icon(
+                                                                Icons.local_hospital,
+                                                                color: Colors.white,
+                                                                size: 18,
+                                                              )),
+                                                        ),
+                                                        Text(snapshot.data[index].address),
+                                                      ],),
+                                                    ) ,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    child:Container(
+                                                      child: Row(children: <Widget>[
+                                                        Container(
+                                                          margin: EdgeInsets.all(5.0),
+                                                          width: 25.0,
+                                                          height: 25.0,
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.red,
+                                                              borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      50.0))),
+                                                          child: Padding(
+                                                              padding: EdgeInsets.all(1.0),
+                                                              child: Icon(
+                                                                Icons.location_city,
+                                                                color: Colors.white,
+                                                                size: 18,
+                                                              )),
+                                                        ),
+                                                        Text(snapshot.data[index].city),
+                                                      ],),
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    child:Container(
+
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child:Container(
+                                                      margin: EdgeInsets.all(5.0),
+                                                      width: 40.0,
+                                                      height: 40.0,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.blue,
+                                                          borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  50.0))),
+                                                      child: Padding(
+                                                          padding: EdgeInsets.all(1.0),
+                                                          child: IconButton(
+                                                              color: Colors.white,
+                                                              icon: Icon(Icons.call),
+                                                              onPressed: (){_Call(snapshot.data[index].contact.toString());}
+                                                          )),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    });
+                              }
+                            },
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  )
               )
             ],
           ),

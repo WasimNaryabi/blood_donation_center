@@ -24,14 +24,46 @@ class _AddDonationHistoryState extends State<AddDonationHistory> {
       'http://www.fonesolutions31.com/BloodDonationCenterApi/apies/add-donation.php';
 
   static var _cityname = [
-    'Peshawar',
-    'Lahor',
-    'Karachi',
-    'Quitta',
+    'Abbottabad',
+    'Bannu',
+    'Battagram'
+    'Batkhela'
+    'Charsadda',
+    'Chitral'
+    'Dera Ismail Khan',
+    'Dir',
+    'Faisalabad',
+    'Gujranwala',
+    'Gujrat',
+    'Hangu',
+    'Haripur',
+    'Hyderabad',
     'Islamabad',
-    'Hangu'
+    'Jhang',
+    'Jhelum',
+    'Karak',
+    'Karachi',
+    'Kohat',
+    'Lakki Marwat',
+    'Lahore',
+    'Mansehra',
+    'Mianwali',
+    'Multan',
+    'Murree',
+    'Mardan',
+    'Nowshera',
+    'Peshawar',
+    'Quitta',
+    'Rawalpindi',
+    'Sargodha',
+    'Sialkot',
+    'Swabi',
+    'Swat',
+    'Tank',
+    'Taxila',
+
   ];
-  String _selectedValue = "Peshawar";
+  String _selectedValue = "Abbottabad";
 
   TextEditingController _hospitalController = TextEditingController();
 
@@ -276,8 +308,7 @@ class _AddDonationHistoryState extends State<AddDonationHistory> {
       } else {
         _scaffoldKey.currentState.hideCurrentSnackBar();
         _save('lastdonation', date);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => ProfileScreen()));
+        Navigator.of(context).pop();
         _showDialog('Success Message', message);
       }
     });
@@ -321,7 +352,7 @@ class _AddDonationHistoryState extends State<AddDonationHistory> {
         children: <Widget>[
           CircularProgressIndicator(backgroundColor: Colors.red),
           Text(
-            "Your New Donation adding...",
+            "  Your New Donation adding...",
             style: TextStyle(color: Colors.red),
           )
         ],

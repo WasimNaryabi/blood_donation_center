@@ -17,8 +17,46 @@ class PostBloodrequest extends StatefulWidget {
 
 class _PostBloodrequestState extends State<PostBloodrequest> {
   static var _bloodGroup = ['A+','A-','B+','B-','AB+','AB-','O+','O-'];
-  static var _cityname = ['Peshawar','Lahor','Karachi','Quitta','Islamabad','Hangu'];
-  String _selectedValue="Hangu";
+  static var _cityname = [
+    'Abbottabad',
+    'Bannu',
+    'Battagram',
+    'Batkhela',
+    'Charsadda',
+    'Chitral',
+    'Dera Ismail Khan',
+    'Dir',
+    'Faisalabad',
+    'Gujranwala',
+    'Gujrat',
+    'Hangu',
+    'Haripur',
+    'Hyderabad',
+    'Islamabad',
+    'Jhang',
+    'Jhelum',
+    'Karak',
+    'Karachi',
+    'Kohat',
+    'Lakki Marwat',
+    'Lahore',
+    'Mansehra',
+    'Mianwali',
+    'Multan',
+    'Murree',
+    'Mardan',
+    'Nowshera',
+    'Peshawar',
+    'Quitta',
+    'Rawalpindi',
+    'Sargodha',
+    'Sialkot',
+    'Swabi',
+    'Swat',
+    'Tank',
+    'Taxila',
+  ];
+  String _selectedValue="Abbottabad";
   String _selectedBloodGroup="A+";
 
   TextEditingController _nameController= TextEditingController();
@@ -427,8 +465,7 @@ class _PostBloodrequestState extends State<PostBloodrequest> {
         _showDialog("Error Message", message);
       } else {
         _scaffoldKey.currentState.hideCurrentSnackBar();
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => MyBloodRequest()));
+        Navigator.of(context).pop();
         _showDialog('Success Message', message);
       }
 
@@ -436,8 +473,7 @@ class _PostBloodrequestState extends State<PostBloodrequest> {
   }
 
   Future<bool> _onBackPressed() {
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (BuildContext context) => MyBloodRequest()));
+    Navigator.of(context).pop();
     false;
   }
 

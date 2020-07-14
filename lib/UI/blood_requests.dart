@@ -153,7 +153,28 @@ class _BloodRequestState extends State<BloodRequest> {
                                   ),
                                 ),
                               );
-                            }else {
+                            }else if(list_lenght < 1){
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(1.0)),
+                                ),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+
+                                      Text(
+                                        "No Blood Request",
+                                        style: TextStyle(color: Colors.red),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                            else {
                               return ListView.builder(
                                   itemCount: list_lenght,
                                   itemBuilder: (BuildContext context, int index){

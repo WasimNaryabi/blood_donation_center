@@ -461,7 +461,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                   );
-                                }else {
+                                }
+                                else if(list_lenght < 1){
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(1.0)),
+                                    ),
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+
+                                          Text(
+                                            "No Blood Request",
+                                            style: TextStyle(color: Colors.red),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }
+                                else {
                                   return ListView.builder(
                                   itemCount: list_lenght,
                                   itemBuilder: (BuildContext context, int index){
@@ -637,19 +659,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     child: Row(children: <Widget>[
                                                       Container(
                                                         margin: EdgeInsets.all(5.0),
-                                                        width: 25.0,
-                                                        height: 25.0,
+                                                        width: 35.0,
+                                                        height: 35.0,
                                                         decoration: BoxDecoration(
                                                             color: Colors.red,
                                                             borderRadius:
                                                             BorderRadius.all(
                                                                 Radius.circular(
                                                                     50.0))),
-                                                        child: Padding(
-                                                            padding: EdgeInsets.all(2.0),
+                                                        child: Center(
+
                                                             child: Text(
                                                               snapshot.data[index].bloodgroup,
-                                                              style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18.0),
+                                                              style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 12.0),
                                                               textAlign: TextAlign.center,
 
                                                             )),

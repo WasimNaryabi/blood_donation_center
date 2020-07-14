@@ -215,6 +215,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                                     _checkConnectivity()
                                                         .then((result) async {
                                                       if (result == true) {
+                                                        _showSnackbar();
                                                         String email =
                                                             _emailController
                                                                 .text;
@@ -284,16 +285,29 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       var error = mapRes['success'];
       var password =mapRes['password'];
       if (error == 0) {
-        print("Email :: => $email");
-        print("Password :: => $password");
+        _scaffoldKey.currentState.hideCurrentSnackBar();
         _showDialog("Message", "No user found on this email");
       } else {
-        print("Email :: => $email");
-        print("Password :: => $password");
+        _scaffoldKey.currentState.hideCurrentSnackBar();
         _SendEmail(email,password);
         _showDialog("Message", "Please Check your email.");
       }
     });
+  }
+
+  _showSnackbar() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      backgroundColor: Colors.white,
+      content: Row(
+        children: <Widget>[
+          CircularProgressIndicator(backgroundColor: Colors.red),
+          Text(
+            "  Searching .....",
+            style: TextStyle(color: Colors.red),
+          )
+        ],
+      ),
+    ));
   }
 
   Future<bool> _onBackPressed() {

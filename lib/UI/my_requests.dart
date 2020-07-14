@@ -155,7 +155,7 @@ class _MyBloodRequestState extends State<MyBloodRequest> {
                                     children: <Widget>[
 
                                       Text(
-                                        "You not post any Request",
+                                        "You not post any request",
                                         style: TextStyle(color: Colors.red),
                                       )
                                     ],
