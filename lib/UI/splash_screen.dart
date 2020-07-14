@@ -45,11 +45,28 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.redAccent,
       body: Container(
-        margin: EdgeInsets.only(top:200.0),
+        margin: EdgeInsets.only(top:0.0),
       child:Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
+            Image.asset(
+              'images/logo.png',
+              width: 100.0,
+              height: 100.0,
+            ),
+            Text(""),
+            Text(
+              "Blood Donation Center",
+              style: TextStyle(fontSize: 22.0, color: Colors.white),
+            ),
+            SizedBox(
+              height: 40.0,
+            ),
+            Text(
+              "v 1.0",
+              style: TextStyle(fontSize: 12.0, color: Colors.grey),
+            ),
           ],
         ),
       ),

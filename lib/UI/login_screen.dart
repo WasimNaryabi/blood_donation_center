@@ -12,67 +12,6 @@ import 'forgetpassword.dart';
 import 'home_screen.dart';
 import 'signup_screen.dart';
 
-/*class User {
-  final int id;
-  final String name;
-  final String email;
-  final String password;
-  final String contact;
-  final String bloodgroup;
-  final String city;
-  final String address;
-  final String lastdonation;
-
-  User(
-      {this.id,
-      this.name,
-      this.email,
-      this.password,
-      this.contact,
-      this.bloodgroup,
-      this.city,
-      this.address,
-      this.lastdonation});
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['member_id'],
-     // name: json['name'],
-      email: json['email'],
-      contact: json['contact'],
-      bloodgroup: json['bloodgroup'],
-      address: json['address'],
-      city: json['city'],
-      lastdonation: json['lastdonation'],
-    );
-  }
-
-  Map toMap() {
-    var map = new Map<String, dynamic>();
-    map["member_id"] = id;
-    //map["name"] = name;
-    map["email"] = email;
-    map["password"]=password;
-    map["contact"] = contact;
-    map["bloodgroup"] = bloodgroup;
-    map["address"] = address;
-    map["city"] = city;
-    map["lastdonation"] = lastdonation;
-
-    return map;
-  }
-}
-
-Future<User> loginUser(String url, {Map body}) async {
-  return http.post(url, body: body).then((http.Response response) {
-    final int statusCode = response.statusCode;
-
-    if (statusCode < 200 || statusCode > 400 || json == null) {
-      throw new Exception("Error while fetching data");
-    }
-    return User.fromJson(json.decode(response.body));
-  });
-}*/
 
 class LoginScreen extends StatefulWidget {
   @override

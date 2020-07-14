@@ -58,6 +58,11 @@ class _SignupScreenState extends State<SignupScreen> {
   String _selectedValue = "Abbottabad";
   String _selectedBloodGroup = "A+";
 
+
+  var options = new GmailSmtpOptions()
+    ..username = 'blood.donation.center2020@gmail.com'
+    ..password = 'Blood2020';
+
   static final API_URL =
       "http://www.fonesolutions31.com/BloodDonationCenterApi/apies/add-member.php";
 
@@ -576,7 +581,29 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  _SendEmail(name, email, password){
+    var emailTransport = new SmtpTransport(options);
 
+    // Create our mail/envelope.
+    var envelope = new Envelope()
+    /*..from = 'foo@bar.com'*/
+      ..recipients.add(email)
+    /*..bccRecipients.add('hidden@recipient.com')*/
+      ..subject = 'New Account Details'
+      ..text = 'Account Details'
+      ..html = '<h4>Asalam O Alikom, Welcome to Pakistan Blood Donation Center.</h4>'
+               '<h5>Dear, $name</h5>'
+               '<p>Your account is successfully create at BLOOD DONATION CENTER.</p>'
+               '<p>Your account login details is following</p>'
+               '<table border="1"><tr><th>Email: </th><td>$email</td></tr> '
+               '<tr><th>Password: </th><td>$password</td></tr></table>'
+               '<hr><h4>Thank you for join us <br> From Pakistan Blood Donation Center.</h4>';
+
+    // Email it.
+    emailTransport.send(envelope)
+        .then((envelope) => print('Email sent! to $email'))
+        .catchError((e) => print('Error occurred: $e'));
+  }
 
   _memberRegistration(
       name, email, password, contact, bloodgroup, address, city) {
@@ -601,7 +628,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _showDialog("Error Message", message);
       } else {
         _scaffoldKey.currentState.hideCurrentSnackBar();
-
+        _SendEmail(name, email, password);
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) => LoginScreen()));
         _showDialog('Success Message', message);

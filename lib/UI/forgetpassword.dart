@@ -7,72 +7,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:mailer2/mailer.dart';
-import 'home_screen.dart';
-import 'signup_screen.dart';
 
-/*class User {
-  final int id;
-  final String name;
-  final String email;
-  final String password;
-  final String contact;
-  final String bloodgroup;
-  final String city;
-  final String address;
-  final String lastdonation;
-
-  User(
-      {this.id,
-      this.name,
-      this.email,
-      this.password,
-      this.contact,
-      this.bloodgroup,
-      this.city,
-      this.address,
-      this.lastdonation});
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['member_id'],
-     // name: json['name'],
-      email: json['email'],
-      contact: json['contact'],
-      bloodgroup: json['bloodgroup'],
-      address: json['address'],
-      city: json['city'],
-      lastdonation: json['lastdonation'],
-    );
-  }
-
-  Map toMap() {
-    var map = new Map<String, dynamic>();
-    map["member_id"] = id;
-    //map["name"] = name;
-    map["email"] = email;
-    map["password"]=password;
-    map["contact"] = contact;
-    map["bloodgroup"] = bloodgroup;
-    map["address"] = address;
-    map["city"] = city;
-    map["lastdonation"] = lastdonation;
-
-    return map;
-  }
-}
-
-Future<User> loginUser(String url, {Map body}) async {
-  return http.post(url, body: body).then((http.Response response) {
-    final int statusCode = response.statusCode;
-
-    if (statusCode < 200 || statusCode > 400 || json == null) {
-      throw new Exception("Error while fetching data");
-    }
-    return User.fromJson(json.decode(response.body));
-  });
-}*/
 
 class ForgetPasswordScreen extends StatefulWidget {
   @override
@@ -267,8 +204,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       ..recipients.add(email)
     /*..bccRecipients.add('hidden@recipient.com')*/
       ..subject = 'Your Account Password'
-      ..text = 'Asalam O Alikom Here is your password.'
-      ..html = '<h2>Asalam O Alikom Here is your password.</h2><h4>Email: </h4><p>$email</p><h4>Password: </h4><p>$password</p>';
+      ..text = 'Asalam O Alikom Here is your account details.'
+      ..html = '<h4>Asalam O Alikom, Here is your account details..</h4>'
+               '<table border="1"><tr><th>Email: </th><td>$email</td></tr> '
+               '<tr><th>Password: </th><td>$password</td></tr></table>';
 
     // Email it.
     emailTransport.send(envelope)
